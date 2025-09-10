@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Estorno por Cancelamento</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>Calculadora de Estorno</h1>
+
+        <div class="form-group">
+            <label for="valorMensalidade">Valor da Mensalidade (R$)</label>
+            <input type="number" id="valorMensalidade" placeholder="Ex: 99.90" step="0.01">
+        </div>
+
+        <div class="form-group">
+            <label for="totalMeses">Duração Total do Contrato (meses)</label>
+            <input type="number" id="totalMeses" placeholder="Ex: 12">
+        </div>
+
+        <div class="form-group">
+            <label for="mesesUtilizados">Meses Já Utilizados</label>
+            <input type="number" id="mesesUtilizados" placeholder="Ex: 3">
+        </div>
+
+        <div class="form-group">
+            <label for="percentualMulta">Percentual da Multa (%)</label>
+            <input type="number" id="percentualMulta" value="20">
+        </div>
+
+        <button onclick="calcularEstorno()">Calcular</button>
+
+        <div id="resultado">
+            <p style="text-align:center; color: #888;">Preencha os valores e clique em calcular.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
