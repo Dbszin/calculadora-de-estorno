@@ -11,6 +11,26 @@
         <h1>Calculadora de Estorno</h1>
 
         <div class="form-group">
+            <label for="nomePlano">Nome do Plano</label>
+            <input type="text" id="nomePlano" placeholder="Ex: Plano Edos">
+        </div>
+
+        <div class="form-group">
+            <label for="idAluno">idAluno</label>
+            <input type="text" id="idAluno" placeholder="Ex: 12345">
+        </div>
+
+        <div class="form-group">
+            <label for="dataInicio">Início</label>
+            <input type="date" id="dataInicio">
+        </div>
+
+        <div class="form-group">
+            <label for="dataCancelamento">Cancelamento</label>
+            <input type="date" id="dataCancelamento">
+        </div>
+
+        <div class="form-group">
             <label for="valorMensalidade">Valor da Mensalidade (R$)</label>
             <input type="number" id="valorMensalidade" placeholder="Ex: 99.90" step="0.01">
         </div>
@@ -29,11 +49,33 @@
             <label for="percentualMulta">Percentual da Multa (%)</label>
             <input type="number" id="percentualMulta" value="20">
         </div>
+        <div class="form-group">
+            <label for="motivo">Motivo do Cancelamento</label>
+            <input type="text" id="motivo" placeholder="Ex: Sáude">
+        </div>
 
-        <button onclick="calcularEstorno()">Calcular</button>
+        <div class="form-group">
+            <label for="autorizacao">Autorização</label>
+            <input type="text" id="autorizacao" placeholder="Ex: 000000">
+        </div>
 
+        <div class="form-group">
+            <label for="cartaoFinal">Cartão final</label>
+            <input type="text" id="cartaoFinal" placeholder="Ex: 1234">
+        </div>
+
+        <div class="form-group">
+            <label for="saida">Saída formatada</label>
+            <textarea id="saida" rows="12" readonly></textarea>
+        </div>
+        
         <div id="resultado">
             <p style="text-align:center; color: #888;">Preencha os valores e clique em calcular.</p>
+        </div>
+
+        <div class="form-actions">
+            <button onclick="calcularEstorno()">Calcular</button>
+            <button type="button" class="secondary" onclick="copiarSaida()">Copiar tudo</button>
         </div>
     </div>
 
