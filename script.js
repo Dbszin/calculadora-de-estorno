@@ -2,9 +2,9 @@ function formatarMoeda(valor) {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-const LABEL_WIDTH = 14;
-const LABEL_WIDTH_TWO_COL = 10;
-const TWO_COL_TOTAL = 36;
+const LABEL_WIDTH = 20; // largura para rótulos de uma coluna (garante alinhamento)
+const LABEL_WIDTH_TWO_COL = 12; // largura de rótulo em cada coluna do bloco de datas
+const TWO_COL_TOTAL = 42; // largura total da primeira coluna (rótulo + valor) no bloco de duas colunas
 
 function linha(label, valor, largura = LABEL_WIDTH) {
     const rotulo = (label + ':').padEnd(largura, ' ');
@@ -16,6 +16,10 @@ function linhaDuasColunas(label1, valor1, label2, valor2, larguraLabel = LABEL_W
     const col1Pad = col1.padEnd(larguraTotalColuna, ' ');
     const col2 = (label2 + ':').padEnd(larguraLabel, ' ') + (valor2 ?? '');
     return col1Pad + col2;
+}
+
+function linhaSimples(label, valor) {
+    return `${label}: ${valor ?? ''}`;
 }
 
 function calcularMesesEntreDatas(inicioStr, cancelamentoStr) {
@@ -81,33 +85,39 @@ function calcularEstorno() {
 
     const inicioStr = dataInicio ? new Date(dataInicio).toLocaleDateString('pt-BR') : '';
     const cancelStr = dataCancelamento ? new Date(dataCancelamento).toLocaleDateString('pt-BR') : '';
-    const linhaValor = `${formatarMoeda(valorTotalContrato)} em ${totalMeses}x de ${formatarMoeda(valorMensalidade)}`;
-
-    const headerPlano = nomePlano ? nomePlano : 'Plano';
-    const header = `CANCELAMENTO (${headerPlano}:*: ID: ${idAluno || ''})`;
-    const linhaDatas = linhaDuasColunas('Inicio', inicioStr, 'Cancelamento', cancelStr);
-    const linhaMesesUsados = linha('Meses utilizados', `${mesesUtilizados}`);
-    const linhaMesesRest = linha('Meses restantes', `${mesesRestantes}`);
-    const linhaValorFmt = linha('Valor', linhaValor);
-    const linhaTaxa = linha(`Taxa de ${percentualMulta}%`, `= ${formatarMoeda(valorMulta)}`);
-    const linhaEstorno = linha('Estorno R$', `= ${formatarMoeda(Math.max(0, valorEstorno))}`);
-    const linhaMotivo = linha('Motivo', `${motivo}`);
-    const linhaAutorizacao = linha('Autorização', `${autorizacao}`);
-    const linhaCartao = linha('Cartão final', `${cartaoFinal}`);
+    const pluralMes = (n) => (n === 1 ? 'mês' : 'meses');
 
     const saida = [
-        header,
+        '*Detalhes do Cancelamento*',
         '',
-        linhaDatas,
-        linhaMesesUsados,
-        linhaMesesRest,
-        linhaValorFmt,
-        linhaTaxa,
-        linhaEstorno,
+        linhaSimples('Assinatura', nomePlano || ''),
+        linhaSimples('ID', idAluno || ''),
+        linhaSimples('Cartão Final', cartaoFinal || ''),
+        linhaSimples('Autorização', autorizacao || ''),
+        '',               
+        '*Valores e Prazos*',
         '',
-        linhaMotivo,
-        linhaAutorizacao,
-        linhaCartao
+        linhaSimples('Início', inicioStr),
+        '',
+        linhaSimples('Cancelamento', cancelStr),
+        '',
+        linhaSimples('Tempo Utilizado', `${mesesUtilizados} ${pluralMes(mesesUtilizados)}`),
+        '',
+        linhaSimples('Meses Restantes', `${mesesRestantes} ${pluralMes(mesesRestantes)}`),
+        '',
+        linhaSimples('Valor Total', `${formatarMoeda(valorTotalContrato)} (em ${totalMeses}x de ${formatarMoeda(valorMensalidade)})`),
+        '',
+        '*Cálculo do Reembolso*',
+        '',
+        linhaSimples(`Taxa de Cancelamento (${percentualMulta}%)`, `${formatarMoeda(valorMulta)}`),
+        '',
+        linhaSimples('Valor a Estornar', `${formatarMoeda(Math.max(0, valorEstorno))}`),
+        '',
+        '*Informações Adicionais*',
+        '',
+        linhaSimples('Motivo do Cancelamento', motivo || ''),
+        '',
+        
     ].join('\n');
 
     if (saidaTextarea) {
